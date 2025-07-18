@@ -1,0 +1,231 @@
+/* Confirm Modal overlay */
+.confirm-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+/* Confirm Modal content container */
+.confirm-modal-content {
+  background: var(--color-background, #1a1a1a);
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 450px;
+  color: var(--color-text, #ffffff);
+  animation: confirmModalFadeIn 0.2s ease-out;
+}
+
+/* Confirm Modal header */
+.confirm-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--color-border, #333);
+}
+
+.confirm-modal-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text, #ffffff);
+}
+
+.confirm-modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--color-text-secondary, #888);
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.confirm-modal-close-btn:hover {
+  background-color: var(--color-hover, #333);
+  color: var(--color-text, #ffffff);
+}
+
+/* Confirm Modal body */
+.confirm-modal-body {
+  padding: 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+/* Warning icon */
+.confirm-modal-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: rgba(255, 152, 0, 0.1);
+}
+
+.warning-icon {
+  color: var(--color-warning, #ff9800);
+  width: 24px;
+  height: 24px;
+}
+
+/* Text content */
+.confirm-modal-text {
+  flex: 1;
+}
+
+.confirm-modal-message {
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text, #ffffff);
+}
+
+.user-name {
+  color: var(--color-primary, #007acc);
+  font-weight: 600;
+}
+
+.confirm-modal-warning {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary, #888);
+  line-height: 1.4;
+}
+
+/* Confirm Modal footer */
+.confirm-modal-footer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding: 16px 24px 24px;
+  border-top: 1px solid var(--color-border, #333);
+}
+
+/* Button styles - reusing from UserModal but adding danger variant */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100px;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary, #444);
+  color: var(--color-text, #ffffff);
+  border: 1px solid var(--color-border, #555);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-secondary-hover, #555);
+}
+
+.btn-danger {
+  background-color: var(--color-danger, #f44336);
+  color: white;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: var(--color-danger-hover, #d32f2f);
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .confirm-modal-overlay {
+    padding: 10px;
+  }
+
+  .confirm-modal-content {
+    max-width: 100%;
+  }
+
+  .confirm-modal-header {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .confirm-modal-body {
+    padding: 20px 16px;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .confirm-modal-footer {
+    padding: 16px;
+    flex-direction: column-reverse;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+/* Focus management for accessibility */
+.confirm-modal-content:focus {
+  outline: none;
+}
+
+/* Animation for modal appearance */
+@keyframes confirmModalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .confirm-modal-content {
+    border: 2px solid var(--color-text, #ffffff);
+  }
+
+  .warning-icon {
+    stroke-width: 3;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .confirm-modal-content {
+    animation: none;
+  }
+
+  .btn,
+  .confirm-modal-close-btn {
+    transition: none;
+  }
+}
