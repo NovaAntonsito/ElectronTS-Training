@@ -3,6 +3,7 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { setupUserIPCHandlers, removeUserIPCHandlers } from './ipc-handlers'
+import { databaseService } from './services/database-service'
 
 function createWindow(): void {
   // Create the browser window.
@@ -39,9 +40,18 @@ function createWindow(): void {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
+
+  // Initialize database service
+  try {
+    await databaseService.initialize()
+    console.log('Database service initialized successfully')
+  } catch (error) {
+    console.error('Failed to initialize database service:', error)
+    // Continue with app initialization even if database fails
+  }
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
@@ -74,9 +84,15 @@ app.on('window-all-closed', () => {
   }
 })
 
-// Clean up IPC handlers before quitting
-app.on('before-quit', () => {
+// Clean up IPC handlers and database before quitting
+app.on('before-quit', async () => {
   removeUserIPCHandlers()
+
+  try {
+    await databaseService.shutdown()
+  } catch (error) {
+    console.error('Error shutting down database service:', error)
+  }
 })
 
 // In this file you can include the rest of your app's specific main process

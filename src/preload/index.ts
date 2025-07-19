@@ -1,5 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import type { LoginCredentials, AuthLoginResponse, AuthVerifyResponse, AuthUser } from '../types/auth'
 
 // Types for user operations
 interface User {
@@ -28,9 +29,33 @@ const userAPI = {
   deleteUser: (id: string): Promise<void> => ipcRenderer.invoke('users:delete', id)
 }
 
+// Auth API for renderer process
+const authAPI = {
+  // Authenticate user with credentials
+  login: (credentials: LoginCredentials): Promise<AuthLoginResponse> =>
+    ipcRenderer.invoke('auth:login', credentials),
+
+  // Logout current user
+  logout: (token: string): Promise<void> =>
+    ipcRenderer.invoke('auth:logout', token),
+
+  // Verify session token
+  verifySession: (token: string): Promise<AuthVerifyResponse> =>
+    ipcRenderer.invoke('auth:verifySession', token),
+
+  // Check if default admin exists
+  checkDefaultAdmin: (): Promise<boolean> =>
+    ipcRenderer.invoke('auth:checkDefaultAdmin'),
+
+  // Create default admin user
+  createDefaultAdmin: (): Promise<AuthUser> =>
+    ipcRenderer.invoke('auth:createDefaultAdmin')
+}
+
 // Custom APIs for renderer
 const api = {
-  users: userAPI
+  users: userAPI,
+  auth: authAPI
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

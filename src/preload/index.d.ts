@@ -1,4 +1,5 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
+import type { LoginCredentials, AuthLoginResponse, AuthVerifyResponse, AuthUser } from '../types/auth'
 
 // User types for API
 interface User {
@@ -18,9 +19,19 @@ interface UserAPI {
   deleteUser: (id: string) => Promise<void>
 }
 
+// Auth API interface
+interface AuthAPI {
+  login: (credentials: LoginCredentials) => Promise<AuthLoginResponse>
+  logout: (token: string) => Promise<void>
+  verifySession: (token: string) => Promise<AuthVerifyResponse>
+  checkDefaultAdmin: () => Promise<boolean>
+  createDefaultAdmin: () => Promise<AuthUser>
+}
+
 // Main API interface
 interface API {
   users: UserAPI
+  auth: AuthAPI
 }
 
 declare global {
