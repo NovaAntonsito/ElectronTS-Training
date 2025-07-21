@@ -376,10 +376,10 @@ export function setupUserIPCHandlers(): void {
   })
 
   // Create session
-  ipcMain.handle('auth:createSession', async (_, userId: string, expiresInMinutes?: number) => {
+  ipcMain.handle('auth:createSession', async (_, userId: string) => {
     try {
       console.log(`IPC: Creating session for user: ${userId}`)
-      const session = await authService.createSession(userId, expiresInMinutes)
+      const session = await authService.createSession(userId)
       console.log(`IPC: Session created successfully for user: ${userId}`)
       return session
     } catch (error) {
@@ -437,7 +437,7 @@ export function setupUserIPCHandlers(): void {
     try {
       console.log('IPC: Creating default admin user')
       await ensureLightDBInitialized()
-      const adminUser = await authService.createDefaultAdminUser()
+      const adminUser = await authService.createDefaultAdmin()
       console.log('IPC: Default admin user creation completed')
       return adminUser
     } catch (error) {
